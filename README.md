@@ -1,19 +1,17 @@
 ### submodular_PGB ###
 *submodular_PGB* is a python library of **high-performance MPI-parallelized implementation of state-of-the-art algorithm Parellel Greedy Boost for submodular maximization**. 
 
-When citing this libary, please cite our paper:
+<!-- When citing this libary, please cite our paper:
 
 
  - Kuhnle, A., Chen, Y., & Dey, T. "Best of Both Worlds: Practical and Theoretically Optimal Submodular Maximization in Parallel". *Conference on Neural Information Processing Systems (NeurIPS) 2021.*
 
 
-### Getting Started with MPI parallel computing, Amazon AWS, and the submodular library: ###
+ -->### Getting Started with MPI parallel computing, Amazon AWS, and the submodular library: ###
 For tutorial and examples on running *submodular_PGB* in parallel** or to discuss how to **use *submodular_PGB* for your research**. Email me at **kuhnle `at' cs.fsu.edu**
 
 ### Replicating our Experiments: ###
 **!NOTE! that you will need to download the data (matrix) files *"images_10K_mat.csv"* and *"tweets_keyword_mat.csv"* and place it in the *"submodular/data"*  directory**. 
-
-See https://gitlab.com/kuhnle/python-submodular.
 
 Our experiments can be replicated by running the following scripts:
 
@@ -29,10 +27,10 @@ Our experiments can be replicated by running the following scripts:
    - bash *bash_scripts/run_perf.bash*
 
 
-**!NOTE!** To run the **FAST** algorithms using the evaluation scripts you will need to do the following:
+**!NOTE!** To run the **FAST** (Breuer, Balkanski, and Singer, ICML 2020) algorithms using the evaluation scripts you will need to do the following:
   - Download the source code from *https://www.dropbox.com/sh/6alt6sg1f6jf2d0/AABhNpI0AIF0_q8yvGecg95oa?dl=0*
   - Update the variable **FAST_src_path** with the full system path to the *"SubmodularData/submodular/src"* (FAST source code) directory in **ExpSet1.py** and **ExpSet2.py**
-  
+
 
 **!NOTE!** Results data will be automatically saved as CSV files in the **experiment_results_output_data** directory and the plots will be automatically saved as PDF files in the **plots** directory.
 
@@ -40,14 +38,14 @@ Our experiments can be replicated by running the following scripts:
 
 ### State-of-the-art Submodular Maximization Algorithms: ###
 
-### Submodular Maximization Algorithms from "Best of Both Worlds: Practical and Theoretically Optimal Submodular Maximization in Parallel": ###
+<!-- ### Submodular Maximization Algorithms from "Best of Both Worlds: Practical and Theoretically Optimal Submodular Maximization in Parallel": ### -->
 
-**PGB** (Kuhnle, Chen, and Dey, NeurIPS 2021 (submitted)).
+**PGB** (NeurIPS 2021 (submitted)).
   - **LinearSeq()** -- runs the preprocessing algorithm *LINEARSEQ* for SMCC (Algorithm 1) 
   - **parallel_threshold_sample()** -- runs the algorithm Parallelizable Greedy Algorithm *THRESHOLDSEQ* for Fixed Threshold 'tau' (Algorithm 3)
   - **ParallelGreedyBoost()** -- runs *PARALLELGREEDYBOOST*  to Boost to the Optimal Ratio (Algorithm 4)
 
-### Submodular Maximization Algorithms from "The Fast Algorithm for Submodular Maximization": ###
+<!-- ### Submodular Maximization Algorithms from "The Fast Algorithm for Submodular Maximization": ### -->
 
 **FAST** (Breuer, Balkanski, and Singer, ICML 2020).
   - FAST_knowopt() -- runs FAST (non-parallel) for a single guess of the optimal solution value (OPT)
