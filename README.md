@@ -5,7 +5,7 @@
 
 ### Prerequisites for replicating our Experiments: ###
 
-**!NOTE! that you will need to download the data (matrix) files *"images_10K_mat.csv"* and *"tweets_keyword_mat.csv"* and place it in the *"submodular/data"*  directory**. 
+**!NOTE!** that you will need to download the data (matrix) files **"images_10K_mat.csv"** and **"tweets_keyword_mat.csv"** and place it in the *"submodular/data"*  directory. 
 
 **!NOTE!** To run the **FAST** *(Breuer, Balkanski, and Singer, ICML 2020)* algorithms using the evaluation scripts you will need to do the following:
   - Download the source code from *https://www.dropbox.com/sh/6alt6sg1f6jf2d0/AABhNpI0AIF0_q8yvGecg95oa?dl=0*
