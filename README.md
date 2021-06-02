@@ -1,14 +1,6 @@
 ### submodular_PGB ###
 *submodular_PGB* is a python library of **high-performance MPI-parallelized implementation of state-of-the-art algorithm Parellel Greedy Boost for submodular maximization**. 
 
-<!-- When citing this libary, please cite our paper:
-
-
- - Kuhnle, A., Chen, Y., & Dey, T. "Best of Both Worlds: Practical and Theoretically Optimal Submodular Maximization in Parallel". *Conference on Neural Information Processing Systems (NeurIPS) 2021.*
-
-
- -->### Getting Started with MPI parallel computing, Amazon AWS, and the submodular library: ###
-For tutorial and examples on running *submodular_PGB* in parallel** or to discuss how to **use *submodular_PGB* for your research**. Email me at **kuhnle `at' cs.fsu.edu**
 
 ### Replicating our Experiments: ###
 **!NOTE! that you will need to download the data (matrix) files *"images_10K_mat.csv"* and *"tweets_keyword_mat.csv"* and place it in the *"submodular/data"*  directory**. 
@@ -29,7 +21,7 @@ Our experiments can be replicated by running the following scripts:
 
 **!NOTE!** To run the **FAST *(Breuer, Balkanski, and Singer, ICML 2020)* **  algorithms using the evaluation scripts you will need to do the following:
   - Download the source code from *https://www.dropbox.com/sh/6alt6sg1f6jf2d0/AABhNpI0AIF0_q8yvGecg95oa?dl=0*
-  - Update the variable **FAST_src_path** with the full system path to the *"SubmodularData/submodular/src"* (FAST source code) directory in **ExpSet1.py** and **ExpSet2.py**
+  - Update the variable **FAST_src_path** with the **full system path** (not relative path) to the *"SubmodularData/submodular/src"* (FAST source code) directory in **ExpSet1.py** and **ExpSet2.py**
 
 
 **!NOTE!** Results data will be automatically saved as CSV files in the **experiment_results_output_data** directory and the plots will be automatically saved as PDF files in the **plots** directory.
