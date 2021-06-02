@@ -19,7 +19,7 @@ Our experiments can be replicated by running the following scripts:
    - bash *bash_scripts/run_perf.bash*
 
 
-**!NOTE!** To run the **FAST *(Breuer, Balkanski, and Singer, ICML 2020)* **  algorithms using the evaluation scripts you will need to do the following:
+**!NOTE!** To run the **FAST** *(Breuer, Balkanski, and Singer, ICML 2020)* algorithms using the evaluation scripts you will need to do the following:
   - Download the source code from *https://www.dropbox.com/sh/6alt6sg1f6jf2d0/AABhNpI0AIF0_q8yvGecg95oa?dl=0*
   - Update the variable **FAST_src_path** with the **full system path** (not relative path) to the *"SubmodularData/submodular/src"* (FAST source code) directory in **ExpSet1.py** and **ExpSet2.py**
 
