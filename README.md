@@ -5,7 +5,7 @@
 
 ### Prerequisites for replicating our Experiments: ###
 
-**!NOTE!** You will need to download the data (matrix) files **"images_10K_mat.csv"** ([download](https://adminmyfsu-my.sharepoint.com/:x:/g/personal/td18d_my_fsu_edu/EevKBMPIU-dCo30rMrxxt_oBWKi9r74ROgjMEwqyzbgS3A?e=QkfUR0)) and **"tweets_keyword_mat.csv"** ([download]((https://adminmyfsu-my.sharepoint.com/:t:/g/personal/td18d_my_fsu_edu/Ebsak2kz8m5IoGPJkoGLYeYBvkkE8Uqf11aYECSl0aEpmw?e=xjeJmR)) and place it in the *"submodular/data"*  directory. 
+**!NOTE!** You will need to download the data (matrix) files **"images_10K_mat.csv"** ([download](https://adminmyfsu-my.sharepoint.com/:x:/g/personal/td18d_my_fsu_edu/EevKBMPIU-dCo30rMrxxt_oBWKi9r74ROgjMEwqyzbgS3A?e=QkfUR0)) and **"tweets_keyword_mat.csv"** ([download](https://adminmyfsu-my.sharepoint.com/:t:/g/personal/td18d_my_fsu_edu/Ebsak2kz8m5IoGPJkoGLYeYBvkkE8Uqf11aYECSl0aEpmw?e=xjeJmR)) and place it in the *"submodular/data"*  directory. 
 
 **!NOTE!** To run the **FAST** *(Breuer, Balkanski, and Singer, ICML 2020)* algorithms using the evaluation scripts you will need to do the following:
   - Download the source code from *https://www.dropbox.com/sh/6alt6sg1f6jf2d0/AABhNpI0AIF0_q8yvGecg95oa?dl=0*
