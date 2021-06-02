@@ -27,7 +27,7 @@ Our experiments can be replicated by running the following scripts:
    - bash *bash_scripts/run_perf.bash*
 
 
-**!NOTE!** To run the **FAST** (Breuer, Balkanski, and Singer, ICML 2020) algorithms using the evaluation scripts you will need to do the following:
+**!NOTE!** To run the **FAST *(Breuer, Balkanski, and Singer, ICML 2020)* **  algorithms using the evaluation scripts you will need to do the following:
   - Download the source code from *https://www.dropbox.com/sh/6alt6sg1f6jf2d0/AABhNpI0AIF0_q8yvGecg95oa?dl=0*
   - Update the variable **FAST_src_path** with the full system path to the *"SubmodularData/submodular/src"* (FAST source code) directory in **ExpSet1.py** and **ExpSet2.py**
 
@@ -48,19 +48,19 @@ Our experiments can be replicated by running the following scripts:
 <!-- ### Submodular Maximization Algorithms from "The Fast Algorithm for Submodular Maximization": ### -->
 
 **FAST** (Breuer, Balkanski, and Singer, ICML 2020).
-  - FAST_knowopt() -- runs FAST (non-parallel) for a single guess of the optimal solution value (OPT)
-  - FAST_guessopt() -- runs FAST (non-parallel) when the optimal solution value (OPT) is unknown
-  - FAST_knowopt_parallel() -- runs FAST in parallel for a single guess of the optimal solution value (OPT)
-  - FAST_guessopt_parallel() -- runs FAST in parallel when the optimal solution value (OPT) is unknown
+  - **FAST_knowopt()** -- runs FAST (non-parallel) for a single guess of the optimal solution value (OPT)
+  - **FAST_guessopt()** -- runs FAST (non-parallel) when the optimal solution value (OPT) is unknown
+  - **FAST_knowopt_parallel()** -- runs FAST in parallel for a single guess of the optimal solution value (OPT)
+  - **FAST_guessopt_parallel()** -- runs FAST in parallel when the optimal solution value (OPT) is unknown
 
 
 ### Objective functions: ###
-We include several canonical submodular objective functions, such as:
+We include the following canonical submodular objective functions:
+- **Image Summarization;** 
+- **Influence Maximization;**
 - **Network Max Cover;**
 - **Revenue Maximization on YouTube;**
-- **Influence Maximization;** 
 - **Traffic Sensor Placement.**
-- **Image Summarization;** 
 - **Twitter Feed Summarization**
 
 
