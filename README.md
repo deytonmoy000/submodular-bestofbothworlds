@@ -2,6 +2,7 @@
 *submodular_PGB* is a python library of **high-performance MPI-parallelized implementation of state-of-the-art algorithm Parellel Greedy Boost for submodular maximization**. 
 
 
+
 ### Prerequisites for replicating our Experiments: ###
 
 **!NOTE! that you will need to download the data (matrix) files *"images_10K_mat.csv"* and *"tweets_keyword_mat.csv"* and place it in the *"submodular/data"*  directory**. 
@@ -11,6 +12,7 @@
   - Update the variable **FAST_src_path** with the **full system path** (not relative path) to the *"SubmodularData/submodular/src"* (FAST source code) directory in **ExpSet1.py** and **ExpSet2.py**. 
   
       For  Eg. **FAST_src_path =  "/home/tonmoy/SubmodularData/submodular/src"**
+
 
 
 
@@ -31,7 +33,10 @@ Our experiments can be replicated by running the following scripts:
 
 
 
+
 **!NOTE!** Results data will be automatically saved as CSV files in the **experiment_results_output_data** directory and the plots will be automatically saved as PDF files in the **plots** directory.
+
+
 
 
 ### State-of-the-art Submodular Maximization Algorithms: ###
