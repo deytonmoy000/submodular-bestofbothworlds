@@ -18,7 +18,7 @@ algnames=[];
 datanames = []
 nalgs=0;
 
-for i in range(2, len(sys.argv)):
+for i in range(1, len(sys.argv)):
     arg=sys.argv[i];
     fnames.append( arg );
     pos = arg.rfind('_');
@@ -78,12 +78,12 @@ for i in range( 0, nalgs, 1 ):
         k = list(data.k)
         time = list(data.Time)
         nodes = list(data.n)[0]
-        print(nproc_distinct)
+        # print(nproc_distinct)
         for j in range(len(nproc_distinct)):
             X_tmp.append(nproc_distinct[j])
             if(which==0):
                 obj_ele = [elem for ii, elem in enumerate(time) if nproc_distinct[j] == nproc[ii]]
-            print(i)    
+            # print(i)    
             obj_mean = np.mean(obj_ele)
             if(i%2!=0 and which == 0):
                 # print("App: ", datanames[i], "k: ",k_distinct[j]," " , Obj[i-1][j], obj_mean, (Obj[i-1][j] - obj_mean)*100/Obj[i-1][j])
@@ -98,7 +98,7 @@ for i in range( 0, nalgs, 1 ):
                 Obj_tmp.append(obj_mean)
             else:
                 Obj_tmp.append(obj_mean)
-                print(obj_mean)
+                # print(obj_mean)
     Obj.append(Obj_tmp)
     ObjStd.append(Obj_tmp)
     

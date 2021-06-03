@@ -11,7 +11,7 @@
   - Download the source code from *https://www.dropbox.com/sh/6alt6sg1f6jf2d0/AABhNpI0AIF0_q8yvGecg95oa?dl=0*
   - Update the variable **FAST_src_path** with the **full system path** (not relative path) to the *"SubmodularData/submodular/src"* (FAST source code) directory in **ExpSet1.py** and **ExpSet2.py**. 
   
-      For  Eg. **FAST_src_path =  "/home/tonmoy/SubmodularData/submodular/src"**
+      For  Eg. **FAST_src_path =  "/home/user/SubmodularData/submodular/src"**
 
 
 
