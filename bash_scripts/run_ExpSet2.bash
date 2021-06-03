@@ -25,7 +25,7 @@ do
     for j in ${!nT[@]};
     do
         nthreads=${nT[$j]}
-        cmd="mpirun -np ${nthreads} python3 -W ignore ${pyfile} ${obj} ALL"
+        cmd="mpirun --oversubscribe -np ${nthreads} python3 -W ignore ${pyfile} ${obj} ALL"
         echo $cmd
       	$cmd
     done

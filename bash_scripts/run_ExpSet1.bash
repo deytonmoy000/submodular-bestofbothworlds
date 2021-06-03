@@ -16,7 +16,7 @@ for i in ${!data_name[@]};
 do
 	data=${data_name[$i]}
 	obj=${objs[$i]}
-	cmd="mpirun -np ${nthreads} python3 -W ignore ${pyfile} ${obj} ALL"
+	cmd="mpirun --oversubscribe -np ${nthreads} python3 -W ignore ${pyfile} ${obj} ALL"
 	echo $cmd
 	$cmd
     
