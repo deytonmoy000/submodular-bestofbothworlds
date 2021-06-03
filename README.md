@@ -1,5 +1,5 @@
 ### submodular-BestOfBothWorlds ###
-*submodular-BestOfBothWorlds* is a python library of **high-performance MPI-parallelized implementation of state-of-the-art algorithm *Parellel Greedy Boost*** for submodular maximization mentioned in the paper ***"Best of Both Worlds: Practical and Theoretically Optimal Submodular Maximization in Parallel"***. 
+*submodular-BestOfBothWorlds* is a python library of high-performance MPI-parallelized implementation of state-of-the-art algorithm **Parellel Greedy Boost** for submodular maximization mentioned in the paper ***"Best of Both Worlds: Practical and Theoretically Optimal Submodular Maximization in Parallel"***. 
 
 
 
