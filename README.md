@@ -6,7 +6,7 @@
 ### Prerequisites for replicating our Experiments: ###
 Please ensure the following steps are completed before running the experiments:
 
-- Install **OpenMPI** using the command *apt install libopenmpi-dev*
+- Install **OpenMPI** using the command *apt install libopenmpi-dev* (for Ubuntu)
 
 - Install **mpi4py** 
 
