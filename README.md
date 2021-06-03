@@ -4,19 +4,21 @@
 
 
 ### Prerequisites for replicating our Experiments: ###
-**!NOTE!** Please install OpenMPI using the command *apt install libopenmpi-dev*
+Please ensure the following steps are completed before running the experiments:
 
-**!NOTE!** Please install mpi4py 
+- Please install OpenMPI using the command *apt install libopenmpi-dev*
 
-**!NOTE!** You will need to download the data (matrix) files **"images_10K_mat.csv"** ([download](https://drive.google.com/file/d/1L5EkO2XZc14malxAVJbtX9DaNYfT4ofK/view?usp=sharing)) and **"tweets_keyword_edgelist.txt"** ([download](https://drive.google.com/file/d/1fCLX_lQko87Ym1T_KgBEs5_0KUPHoutI/view?usp=sharing)) and place it in the *"submodular/data"*  directory. 
+- Please install mpi4py 
 
-**!NOTE!** If you would like to run the **FAST** *(Breuer, Balkanski, and Singer, ICML 2020)* algorithms using the evaluation scripts you will need to do the following:
-  - Request the source code from *https://www.adambreuer.com/code*
-  - Update the variable **FAST_src_path** with the **full system path** (not relative path) to the *"SubmodularData/submodular/src"* (FAST source code) directory in **ExpSet1.py** and **ExpSet2.py**. 
+- You will need to download the data (matrix) files **"images_10K_mat.csv"** ([download](https://drive.google.com/file/d/1L5EkO2XZc14malxAVJbtX9DaNYfT4ofK/view?usp=sharing)) and **"tweets_keyword_edgelist.txt"** ([download](https://drive.google.com/file/d/1fCLX_lQko87Ym1T_KgBEs5_0KUPHoutI/view?usp=sharing)) and place it in the *"submodular/data"*  directory. 
+
+- If you would like to run the **FAST** *(Breuer, Balkanski, and Singer, ICML 2020)* algorithms using the evaluation scripts you will need to do the following:
+    - Request the source code from *https://www.adambreuer.com/code*
+    - Update the variable **FAST_src_path** with the **full system path** (not relative path) to the *"SubmodularData/submodular/src"* (FAST source code) directory in **ExpSet1.py** and **ExpSet2.py**. 
   
-      For  Eg. **FAST_src_path =  "/home/user/SubmodularData/submodular/src"**
+        For  Eg. **FAST_src_path =  "/home/user/SubmodularData/submodular/src"**
 
-**!NOTE!** If you do not have the **FAST** *(Breuer, Balkanski, and Singer, ICML 2020)*  source code, the evaluation scripts will **only** run the algorithm **LS+PGB**.
+    - **!NOTE!** If you do not have the **FAST** *(Breuer, Balkanski, and Singer, ICML 2020)*  source code, the evaluation scripts will **only** run the algorithm **LS+PGB**.
 
 
 
