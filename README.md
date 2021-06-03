@@ -8,7 +8,7 @@
 **!NOTE!** You will need to download the data (matrix) files **"images_10K_mat.csv"** ([download](https://drive.google.com/file/d/1qNPWRvjfhA2LK1_qsoaDhNcJh7Aw1qcj/view?usp=sharing)) and **"tweets_keyword_edgelist.txt"** ([download](https://drive.google.com/file/d/17ah65YNz2pI6lqJmn_R1INy8aMkA3D2B/view?usp=sharing)) and place it in the *"submodular/data"*  directory. 
 
 **!NOTE!** To run the **FAST** *(Breuer, Balkanski, and Singer, ICML 2020)* algorithms using the evaluation scripts you will need to do the following:
-  - Download the source code from *https://www.dropbox.com/sh/6alt6sg1f6jf2d0/AABhNpI0AIF0_q8yvGecg95oa?dl=0*
+  - Request the source code from *https://www.adambreuer.com/code*
   - Update the variable **FAST_src_path** with the **full system path** (not relative path) to the *"SubmodularData/submodular/src"* (FAST source code) directory in **ExpSet1.py** and **ExpSet2.py**. 
   
       For  Eg. **FAST_src_path =  "/home/user/SubmodularData/submodular/src"**
