@@ -6,9 +6,13 @@
 ### Prerequisites for replicating our Experiments: ###
 Please ensure the following steps are completed before running the experiments:
 
-- Please install OpenMPI using the command *apt install libopenmpi-dev*
+- Install **OpenMPI** using the command *apt install libopenmpi-dev*
 
-- Please install mpi4py 
+- Install **mpi4py** 
+
+- Install **scipy**
+
+- Install **networkx**
 
 - You will need to download the data (matrix) files **"images_10K_mat.csv"** ([download](https://drive.google.com/file/d/1L5EkO2XZc14malxAVJbtX9DaNYfT4ofK/view?usp=sharing)) and **"tweets_keyword_edgelist.txt"** ([download](https://drive.google.com/file/d/1fCLX_lQko87Ym1T_KgBEs5_0KUPHoutI/view?usp=sharing)) and place it in the *"submodular/data"*  directory. 
 
