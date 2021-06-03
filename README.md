@@ -16,7 +16,7 @@
   
       For  Eg. **FAST_src_path =  "/home/user/SubmodularData/submodular/src"**
 
-**!NOTE!** If you do not have the **FAST** *(Breuer, Balkanski, and Singer, ICML 2020)*  source code, the evaluation scripts will only run the algorithm **LS+PGB**.
+**!NOTE!** If you do not have the **FAST** *(Breuer, Balkanski, and Singer, ICML 2020)*  source code, the evaluation scripts will **only** run the algorithm **LS+PGB**.
 
 
 
@@ -26,11 +26,12 @@ Our experiments can be replicated by running the following scripts:
 
 
  **To replicate Experiments set 1:**
-   - bash *./bash_scripts/run_ExpSet1.bash ExpSet1.py **nThreads***  (Replace *nThreads* by the number of threads you would like the experiments to use)    
+   - bash *./bash_scripts/run_ExpSet1.bash ExpSet1.py "**nThreads**"*
+   - **NOTE** Replace **nThreads** by the number of threads you would like the experiments to use    
 
  **To replicate Experiments set 2:**
    - bash *./bash_scripts/run_ExpSet2.bash ExpSet2.py*
-   - **NOTE** The script requires upto 64 threads to run. If you would like to change that, please update the line *declare -a nT=(1 2 4 8 16 32 64)* in **bash_scripts/run_ExpSet2.bash**
+   - **NOTE** The script requires upto 64 threads to run. If you would like to change that, please update the line **declare -a nT=(1 2 4 8 16 32 64)** in *bash_scripts/run_ExpSet2.bash*
  
  **To obtain the results illustrated in Table 2**
    - Generate the result for **Experiments set 1**
