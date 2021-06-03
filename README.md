@@ -43,7 +43,7 @@ Our experiments can be replicated by running the following scripts:
 
 
 
-###Implemented Procedures: ###
+### Implemented Procedures: ###
 
 <!-- ### Submodular Maximization Algorithms from "Best of Both Worlds: Practical and Theoretically Optimal Submodular Maximization in Parallel": ### -->
 
