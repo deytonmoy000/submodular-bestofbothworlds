@@ -24,7 +24,7 @@ Please ensure the following steps are completed before running the experiments:
   
         For  Eg. **FAST_src_path =  "/home/user/SubmodularData/submodular/src"**
 
-    - **!NOTE!** If you do not have the **FAST** *(Breuer, Balkanski, and Singer, ICML 2020)*  source code, the evaluation scripts will **only** run the algorithm **LS+PGB**.
+    -  If you do not have the **FAST** *(Breuer, Balkanski, and Singer, ICML 2020)*  source code, the evaluation scripts will **only** run the algorithm **LS+PGB**.
 
 
 
@@ -35,18 +35,18 @@ Our experiments can be replicated by running the following scripts:
 
  **To replicate Experiments set 1:** (Figure 2, 3, 4)
    - bash *./bash_scripts/run_ExpSet1.bash ExpSet1.py "**nThreads**"*
-   - **!NOTE!** Replace **nThreads** by the number of threads you would like the experiments to use    
+   -  Replace **nThreads** by the number of threads you would like the experiments to use    
 
  **To replicate Experiments set 2:** (Figure 5)
    - bash *./bash_scripts/run_ExpSet2.bash ExpSet2.py*
-   - **!NOTE!** The script requires upto 64 threads to run. If you would like to change that, please update the line **declare -a nT=(1 2 4 8 16 32 64)** in *bash_scripts/run_ExpSet2.bash*
+   -  The script requires upto 64 threads to run. If you would like to change that, please update the line **declare -a nT=(1 2 4 8 16 32 64)** in *bash_scripts/run_ExpSet2.bash*
  
  **To obtain the results illustrated in Table 2**
    - Generate the result for **Experiments set 1**
    - bash *bash_scripts/run_perf.bash*
 
 
-**!NOTE!** Results data will be automatically saved as CSV files in the **experiment_results_output_data** directory and the plots will be automatically saved as PDF files in the **plots** directory.
+ Results data will be automatically saved as CSV files in the **experiment_results_output_data** directory and the plots will be automatically saved as PDF files in the **plots** directory.
 
 
 
@@ -60,7 +60,7 @@ Our experiments can be replicated by running the following scripts:
   - **parallel_threshold_sample()** [TS] -- runs the algorithm Parallelizable Greedy Algorithm *THRESHOLDSEQ* for Fixed Threshold 'tau' (Algorithm 3)
   - **ParallelGreedyBoost()** [**LS+PGB**] -- runs *PARALLELGREEDYBOOST*  to Boost to the Optimal Ratio (Algorithm 4) using the *alpha* and *gamma* obtained by running *LinearSeq()*
 
-**!NOTE!** All the procedures are implemented in ***src/submodular_PGB.py***
+ All the procedures are implemented in ***src/submodular_PGB.py***
 
 
 <!-- ### Submodular Maximization Algorithms from "The Fast Algorithm for Submodular Maximization": ### -->
