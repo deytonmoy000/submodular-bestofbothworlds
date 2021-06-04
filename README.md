@@ -1,5 +1,5 @@
-### submodular-LS+PGB ###
-*submodular-LS+PGB* is a python library of high-performance MPI-parallelized implementation of state-of-the-art algorithm **LS+PGB** for submodular maximization described in the paper ***"Best of Both Worlds: Practical and Theoretically Optimal Submodular Maximization in Parallel"***. 
+### submodular-BestOfBothWorlds ###
+*submodular-BestOfBothWorlds* is a python library of high-performance MPI-parallelized implementation of state-of-the-art algorithm **LS+PGB** for submodular maximization described in the paper ***"Best of Both Worlds: Practical and Theoretically Optimal Submodular Maximization in Parallel"***. 
 
 
 
