@@ -8,6 +8,8 @@ Please ensure the following steps are completed before running the experiments:
 
 - Install **OpenMPI** using the command *apt install libopenmpi-dev* (for Ubuntu)
 
+- Install **pandas**
+
 - Install **mpi4py** 
 
 - Install **scipy**
@@ -54,9 +56,12 @@ Our experiments can be replicated by running the following scripts:
 <!-- ### Submodular Maximization Algorithms from "Best of Both Worlds: Practical and Theoretically Optimal Submodular Maximization in Parallel": ### -->
 
 **LS+PGB**.
-  - **LinearSeq()** [**LS**] -- runs the preprocessing algorithm *LINEARSEQ* for SMCC (Algorithm 1). The procedure implements the optimizations described in *Section G*.
+  - **LinearSeq()** [**LS**] -- runs the algorithm *LINEARSEQ* for SMCC (Algorithm 1). The procedure implements the optimizations described in *Section G*.
   - **parallel_threshold_sample()** [TS] -- runs the algorithm Parallelizable Greedy Algorithm *THRESHOLDSEQ* for Fixed Threshold 'tau' (Algorithm 3)
   - **ParallelGreedyBoost()** [**LS+PGB**] -- runs *PARALLELGREEDYBOOST*  to Boost to the Optimal Ratio (Algorithm 4) using the *alpha* and *gamma* obtained by running *LinearSeq()*
+
+**!NOTE!** All the procedures are implemented in ***src/submodular_PGB.py***
+
 
 <!-- ### Submodular Maximization Algorithms from "The Fast Algorithm for Submodular Maximization": ### -->
 
