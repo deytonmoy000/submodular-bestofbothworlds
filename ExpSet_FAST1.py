@@ -182,7 +182,7 @@ def run_adaptive_experiments(objective, k_vals_vec, filepath_string, experiment_
                                                                     comm, \
                                                                     rank, \
                                                                     size, \
-                                                                    OPT=None, \
+                                                                    OPT=val_sum_topk, \
                                                                     p_root=0, \
                                                                     randseed=trial, \
                                                                     m_reducedmean=m_reducedmean)
@@ -278,9 +278,186 @@ if __name__ == '__main__':
     rank = comm.Get_rank()
     size = comm.Get_size()
 
-    size_of_ground_set = 500
+    
+
+    ################################################################
+    ################################################################
+    #############           REAL DATA            ###################
+    ################################################################
+    ################################################################
 
 
+
+    # # #####################################################################
+    # # ##          INFLUENCEMAX  CallTech FB NETWORK Example         #######
+    # # #####################################################################
+    if rank == p_root:
+        print( 'Initializing FB CalTech Objective' )
+    experiment_string = 'INFMAXCalTech'
+
+    # Undirected Facebook Network. Format as an adjacency matrix
+    filename_net = "data/socfb-Caltech36.csv"
+    edgelist = pd.read_csv(filename_net)
+    net_nx = nx.from_pandas_edgelist(edgelist, \
+                                     source='source', \
+                                     target='target', \
+                                     edge_attr=None, \
+                                     create_using=None)
+    net_nx = net_nx.to_undirected()
+    try:
+        net_nx.remove_edges_from(net_nx.selfloop_edges())
+    except:
+        net_nx.remove_edges_from(nx.selfloop_edges(net_nx)) #Later version of networkx prefers this syntax
+
+
+    #A = np.asarray( nx.adjacency_matrix(net_nx).todense() )
+    if rank == p_root:
+        print( 'Loaded data. Generating sparse adjacency matrix' )
+    A = nx.to_scipy_sparse_matrix(net_nx, format='csr')
+    A.setdiag(1)
+
+    A = A.toarray().astype(np.bool)
+
+    p = 0.01
+    objective = InfluenceMax.InfluenceMax(A, p)
+    if rank == p_root:
+        print( 'FB CalTech Objective initialized. Beginning tests.' )
+    
+    k_vals_vec = [25, 50, 100, 150, 200, 250, 300]
+    # k_vals_vec = [5]
+
+    comm.barrier()
+    run_adaptive_experiments(objective, k_vals_vec, filepath_string, experiment_string, comm, rank, size)
+    
+
+
+
+    # ##############################################################
+    # ## DIRECTED EdgeCover ON CALI ROAD NETWORK EXPERIMENT ########
+    # ##############################################################
+    experiment_string = 'CAROAD'
+    # Weighted Directed highway adjacency matrix
+    filename = "data/Pems_Adj_thresh_10mi_522n.csv"
+
+    A = pd.read_csv(filename).values
+
+    # Generate our DIRECTED MaxCut class containing the function
+    objective = TrafficCoverDirWeighted.TrafficCoverDirWeighted(A)
+
+    k_vals_vec = [20, 40, 60, 80, 100, 120, 140, 160]
+    # k_vals_vec = [5]
+
+    # Print info and start the stopwatch
+    if rank == p_root:
+        print ('Starting California experiment. Network size = ', str(A.shape[0]), ' nodes.')
+    comm.barrier()
+
+    run_adaptive_experiments(objective, k_vals_vec, filepath_string, experiment_string, comm, rank, size)
+    
+
+
+
+    # ############################################################
+    # ## YOUTUBE REVENUE MAXIMIZATION EXAMPLE ####################
+    # ############################################################
+    comm.barrier()
+    if rank == p_root:
+        print( 'Initializing Youtube Objective' )
+    experiment_string = 'YOUTUBE50'
+
+    edgelist = pd.read_csv('data/youtube_50rand_edgelist.csv', delimiter=',')
+    # Edgelist to Adjacency Matrix
+    A = edgelist.pivot(index = "source", columns = "target", values = "weight_draw")
+    # Cast to Numpy Matrix
+    #A = A.as_matrix()
+    A = A.values
+    # Missing edges are 0
+    A[np.isnan(A)] = 0
+
+    A[A>0] = A[A>0] + 1.0
+
+    alpha = 0.9
+    # Generate class containing our f(S)
+    objective = RevenueMaxOnNet.RevenueMaxOnNet(A, alpha)
+    if rank == p_root:
+        print( 'YOUTUBE Objective initialized. Adjacency matrix shape is:', A.shape, ' Beginning tests.' )
+
+    k_vals_vec = [20, 40, 60, 80, 100, 120, 140, 160, 180, 200]
+    # k_vals_vec = [5]
+
+    comm.barrier()
+    run_adaptive_experiments(objective, k_vals_vec, filepath_string, experiment_string, comm, rank, size)
+
+
+
+
+    # ################################################################
+    # ###              Movie Recommendation Example                ###
+    # ################################################################
+    # Load the movie data and generate the image pairwise distance matrix Dist
+    comm.barrier()
+    experiment_string = 'MOVIECOVERsubset'
+
+    num_random_movies_users = size_of_ground_set #-1 means 'all images'
+
+    # Initialize the movie data
+    movie_user_mat_fname = "data/Movie_ratings_mat.csv"
+    movies_dat_fname = 'data/movies.dat'
+
+    objective = None
+
+    try:
+        Sim = MovieRecommenderMonotoneCover.load_movie_user_matrix(movie_user_mat_fname)
+        if rank != p_root:
+            Sim = None # Free memory on all but root proc -- we just try to have them load to test whether the movie data exists
+
+        if rank == p_root:
+            genres_idx, genres_dict, genres_strings, movie_titles, movie_years = \
+                MovieRecommenderMonotoneCover.load_movie_genres(movies_dat_fname)
+
+            movierandstate = np.random.RandomState(1)
+
+            if num_random_movies_users > 0:  
+                movie_rows     = movierandstate.choice(Sim.shape[0], num_random_movies_users, replace=False)
+                Sim            = Sim[movie_rows,:][:,movie_rows]
+                genres_idx     = genres_idx[movie_rows]
+                genres_strings = genres_strings[movie_rows]
+                movie_titles   = movie_titles[movie_rows]
+
+            print('loaded movie ratings matrix of shape', Sim.shape)
+
+            # Generate our class containing the function
+            genre_weight = 0.5 * np.max( np.sum(Sim, 1) )
+            year_weight = 0.0# * np.max( np.sum(Sim, 1) ) 
+            ratings_weight = 1.0
+            cover_weight = 1.0
+            good_movie_score = 4.5
+
+            objective = MovieRecommenderMonotoneCover.MovieRecommenderMonotoneCover(Sim, \
+                                                                            movie_titles, \
+                                                                            genres_idx, \
+                                                                            movie_years, \
+                                                                            ratings_weight, \
+                                                                            cover_weight, \
+                                                                            genre_weight, \
+                                                                            year_weight, \
+                                                                            good_movie_score)
+
+        # Root processor broadcasts the objective function to all processors
+        objective = comm.bcast(objective, p_root)
+
+        k_vals_vec = [25, 50, 75, 100, 125, 150, 175, 200]
+        # k_vals_vec = [5]
+
+        comm.barrier()
+
+        run_adaptive_experiments(objective, k_vals_vec, filepath_string, experiment_string, comm, rank, size)
+
+
+    except:
+        if rank == 0:
+            print('\nThe final experiment (movie recommendation) requires a large movies data file (too large for GitHub).\
+                   Add this file to the /data/ folder to run this experiment.\n')
 
 
     # ##################################################################
@@ -288,7 +465,7 @@ if __name__ == '__main__':
     # ######                 SYNTHETIC GRAPH DATA                 ######
     # ##################################################################
     # ##################################################################
-
+    size_of_ground_set = 500
 
     # # ################################################################
     # # ## Boolean Undirected VertCover SBM Example ####################
@@ -480,187 +657,6 @@ if __name__ == '__main__':
     comm.barrier()
     run_adaptive_experiments(objective, k_vals_vec, filepath_string, experiment_string, comm, rank, size)
 
-
-
-
-    ################################################################
-    ################################################################
-    #############           REAL DATA            ###################
-    ################################################################
-    ################################################################
-
-
-
-    # # #####################################################################
-    # # ##          INFLUENCEMAX  CallTech FB NETWORK Example         #######
-    # # #####################################################################
-    if rank == p_root:
-        print( 'Initializing FB CalTech Objective' )
-    experiment_string = 'INFMAXCalTech'
-
-    # Undirected Facebook Network. Format as an adjacency matrix
-    filename_net = "data/socfb-Caltech36.csv"
-    edgelist = pd.read_csv(filename_net)
-    net_nx = nx.from_pandas_edgelist(edgelist, \
-                                     source='source', \
-                                     target='target', \
-                                     edge_attr=None, \
-                                     create_using=None)
-    net_nx = net_nx.to_undirected()
-    try:
-        net_nx.remove_edges_from(net_nx.selfloop_edges())
-    except:
-        net_nx.remove_edges_from(nx.selfloop_edges(net_nx)) #Later version of networkx prefers this syntax
-
-
-    #A = np.asarray( nx.adjacency_matrix(net_nx).todense() )
-    if rank == p_root:
-        print( 'Loaded data. Generating sparse adjacency matrix' )
-    A = nx.to_scipy_sparse_matrix(net_nx, format='csr')
-    A.setdiag(1)
-
-    A = A.toarray().astype(np.bool)
-
-    p = 0.01
-    objective = InfluenceMax.InfluenceMax(A, p)
-    if rank == p_root:
-        print( 'FB CalTech Objective initialized. Beginning tests.' )
-    
-    k_vals_vec = [25, 50, 100, 150, 200, 250, 300]
-    # k_vals_vec = [5]
-
-    comm.barrier()
-    run_adaptive_experiments(objective, k_vals_vec, filepath_string, experiment_string, comm, rank, size)
-    
-
-
-
-    # ##############################################################
-    # ## DIRECTED EdgeCover ON CALI ROAD NETWORK EXPERIMENT ########
-    # ##############################################################
-    experiment_string = 'CAROAD'
-    # Weighted Directed highway adjacency matrix
-    filename = "data/Pems_Adj_thresh_10mi_522n.csv"
-
-    A = pd.read_csv(filename).values
-
-    # Generate our DIRECTED MaxCut class containing the function
-    objective = TrafficCoverDirWeighted.TrafficCoverDirWeighted(A)
-
-    k_vals_vec = [20, 40, 60, 80, 100, 120, 140, 160]
-    # k_vals_vec = [5]
-
-    # Print info and start the stopwatch
-    if rank == p_root:
-        print ('Starting California experiment. Network size = ', str(A.shape[0]), ' nodes.')
-    comm.barrier()
-
-    run_adaptive_experiments(objective, k_vals_vec, filepath_string, experiment_string, comm, rank, size)
-    
-
-
-
-    # ############################################################
-    # ## YOUTUBE REVENUE MAXIMIZATION EXAMPLE ####################
-    # ############################################################
-    comm.barrier()
-    if rank == p_root:
-        print( 'Initializing Youtube Objective' )
-    experiment_string = 'YOUTUBE50'
-
-    edgelist = pd.read_csv('data/youtube_50rand_edgelist.csv', delimiter=',')
-    # Edgelist to Adjacency Matrix
-    A = edgelist.pivot(index = "source", columns = "target", values = "weight_draw")
-    # Cast to Numpy Matrix
-    #A = A.as_matrix()
-    A = A.values
-    # Missing edges are 0
-    A[np.isnan(A)] = 0
-
-    A[A>0] = A[A>0] + 1.0
-
-    alpha = 0.9
-    # Generate class containing our f(S)
-    objective = RevenueMaxOnNet.RevenueMaxOnNet(A, alpha)
-    if rank == p_root:
-        print( 'YOUTUBE Objective initialized. Adjacency matrix shape is:', A.shape, ' Beginning tests.' )
-
-    k_vals_vec = [20, 40, 60, 80, 100, 120, 140, 160, 180, 200]
-    # k_vals_vec = [5]
-
-    comm.barrier()
-    run_adaptive_experiments(objective, k_vals_vec, filepath_string, experiment_string, comm, rank, size)
-
-
-
-
-    # ################################################################
-    # ###              Movie Recommendation Example                ###
-    # ################################################################
-    # Load the movie data and generate the image pairwise distance matrix Dist
-    comm.barrier()
-    experiment_string = 'MOVIECOVERsubset'
-
-    num_random_movies_users = size_of_ground_set #-1 means 'all images'
-
-    # Initialize the movie data
-    movie_user_mat_fname = "data/Movie_ratings_mat.csv"
-    movies_dat_fname = 'data/movies.dat'
-
-    objective = None
-
-    try:
-        Sim = MovieRecommenderMonotoneCover.load_movie_user_matrix(movie_user_mat_fname)
-        if rank != p_root:
-            Sim = None # Free memory on all but root proc -- we just try to have them load to test whether the movie data exists
-
-        if rank == p_root:
-            genres_idx, genres_dict, genres_strings, movie_titles, movie_years = \
-                MovieRecommenderMonotoneCover.load_movie_genres(movies_dat_fname)
-
-            movierandstate = np.random.RandomState(1)
-
-            if num_random_movies_users > 0:  
-                movie_rows     = movierandstate.choice(Sim.shape[0], num_random_movies_users, replace=False)
-                Sim            = Sim[movie_rows,:][:,movie_rows]
-                genres_idx     = genres_idx[movie_rows]
-                genres_strings = genres_strings[movie_rows]
-                movie_titles   = movie_titles[movie_rows]
-
-            print('loaded movie ratings matrix of shape', Sim.shape)
-
-            # Generate our class containing the function
-            genre_weight = 0.5 * np.max( np.sum(Sim, 1) )
-            year_weight = 0.0# * np.max( np.sum(Sim, 1) ) 
-            ratings_weight = 1.0
-            cover_weight = 1.0
-            good_movie_score = 4.5
-
-            objective = MovieRecommenderMonotoneCover.MovieRecommenderMonotoneCover(Sim, \
-                                                                            movie_titles, \
-                                                                            genres_idx, \
-                                                                            movie_years, \
-                                                                            ratings_weight, \
-                                                                            cover_weight, \
-                                                                            genre_weight, \
-                                                                            year_weight, \
-                                                                            good_movie_score)
-
-        # Root processor broadcasts the objective function to all processors
-        objective = comm.bcast(objective, p_root)
-
-        k_vals_vec = [25, 50, 75, 100, 125, 150, 175, 200]
-        # k_vals_vec = [5]
-
-        comm.barrier()
-
-        run_adaptive_experiments(objective, k_vals_vec, filepath_string, experiment_string, comm, rank, size)
-
-
-    except:
-        if rank == 0:
-            print('\nThe final experiment (movie recommendation) requires a large movies data file (too large for GitHub).\
-                   Add this file to the /data/ folder to run this experiment.\n')
 
 
     if rank == p_root:
