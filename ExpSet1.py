@@ -35,8 +35,8 @@ from objectives import  NetCover,\
 """
 Provide the full system path to the "SubmodularData/submodular/src" (FAST source code) directory
 """
-# FAST_src_path = "/home/tonmoy/SubmodularData/submodular/src"
-FAST_src_path = ""
+FAST_src_path = "/home/tonmoy/SubmodularData/submodular/src"
+# FAST_src_path = ""
 
 # Load our optimization algorithms and helper functions
 from src import submodular_PGB
@@ -110,6 +110,8 @@ def run_PGB(objective, k_vals_vec, filepath_string, experiment_string, comm, ran
     val_vec = []
     queries_vec = []
     time_vec = []
+    #Tracking adaptivity
+    adap_vec = []
 
     for ii, kk in enumerate(k_vals_vec):
 
@@ -134,11 +136,15 @@ def run_PGB(objective, k_vals_vec, filepath_string, experiment_string, comm, ran
                 val_vec.append(val)
                 queries_vec.append(queries)
                 time_vec.append(time)
+                #Tracking adaptivity
+                adap_vec,append(len(sol_r))
 
                 ## Save data progressively
                 dataset = pd.DataFrame({'f_of_S':  val_vec, \
                                         'Queries': queries_vec, \
                                         'Time':    time_vec, \
+                                        #Tracking adaptivity
+                                        'Adaptivity': adap_vec, \
                                         'k':       np.concatenate([np.repeat(k_vals_vec[:ii], trials), [kk]*(trial+1)]), \
                                         'n':       [size_groundset]*(ii*trials+trial+1), \
                                         'nproc':   [size]*(ii*trials+trial+1), \
@@ -160,6 +166,8 @@ def run_FAST(objective, k_vals_vec, filepath_string, experiment_string, comm, ra
     val_vec = []
     queries_vec = []
     time_vec = []
+    #Tracking adaptivity
+    adap_vec = []
     # Save data progressively. 
     for ii, kk in enumerate(k_vals_vec):
 
@@ -185,11 +193,14 @@ def run_FAST(objective, k_vals_vec, filepath_string, experiment_string, comm, ra
                 val_vec.append(val)
                 queries_vec.append(queries)
                 time_vec.append(time)
-
+                #Tracking adaptivity
+                adap_vec,append(len(sol_r))
                 ## Save data progressively
                 dataset = pd.DataFrame({'f_of_S':  val_vec, \
                                         'Queries': queries_vec, \
                                         'Time':    time_vec, \
+                                        #Tracking adaptivity
+                                        'Adaptivity': adap_vec, \
                                         'k':       np.concatenate([np.repeat(k_vals_vec[:ii], trials), [kk]*(trial+1)]), \
                                         'n':       [size_groundset]*(ii*trials+trial+1), \
                                         'nproc':   [size]*(ii*trials+trial+1), \

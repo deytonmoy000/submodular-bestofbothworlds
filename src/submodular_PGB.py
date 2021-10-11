@@ -418,6 +418,7 @@ def LinearSeq(objective, k, eps, comm, rank, size, p_root=0, seed=42, stop_if_ap
         if (rank == p_root):
             print("done.");
         S= list(set().union(S, T))
+        #Tracking adaptivity
         S_rounds.append([ele for ele in S])
         query_rounds.append(queries)
         time_rounds.append( MPI.Wtime() - p_start ) 
@@ -524,6 +525,7 @@ def LinearSeq(objective, k, eps, comm, rank, size, p_root=0, seed=42, stop_if_ap
         if (rank == p_root):
             print("done.");
         S= list(set().union(S, T))
+        #Tracking adaptivity
         S_rounds.append([ele for ele in S])
         query_rounds.append(queries)
         time_rounds.append( MPI.Wtime() - p_start ) 
@@ -604,7 +606,8 @@ def ParallelGreedyBoost(objective, k, eps, comm, rank, size, p_root=0, seed=42,s
     time0 = datetime.now()
 
     S = []
-    S_rounds = [[]]
+    #Tracking adaptivity
+    S_rounds = sol_r
     time_rounds = [0]
     query_rounds = [0]
     iters = 0
@@ -620,6 +623,8 @@ def ParallelGreedyBoost(objective, k, eps, comm, rank, size, p_root=0, seed=42,s
     #pastGains = np.inf*np.ones(len(V));
     while (tau > taumin):
         tau = np.min( [tau, np.max( pastGains ) * (1.0 - eps)] );
+        if (tau <= 0.0):
+            tau = taumin;
         V_above_thresh = np.where(pastGains >= tau)[0]
         V_above_thresh = [ V[ele] for ele in V_above_thresh ];
         V_above_thresh = list( set(V_above_thresh) - set(S) );
@@ -629,7 +634,6 @@ def ParallelGreedyBoost(objective, k, eps, comm, rank, size, p_root=0, seed=42,s
         currGains = parallel_margvals_returnvals(objective, S, V_above_thresh, comm, rank, size)
         #Added query increment
         queries += len(V_above_thresh)
-
 
 #        if (rank == 0):
 #            print( currGains );
@@ -644,6 +648,8 @@ def ParallelGreedyBoost(objective, k, eps, comm, rank, size, p_root=0, seed=42,s
             [pastGains, S, queries_tmp] = parallel_threshold_sample( V_above_thresh, S, objective, tau, eps / np.float(3), 1.0 / ((np.log( alpha / 3 ) / np.log( 1 - eps ) ) + 1) , k, comm, rank, size, randstate, pastGains );
             #Added query increment
             queries += queries_tmp
+            #Tracking adaptivity
+            S_rounds.append([ele for ele in S])
             for ele in S:
                 pastGains[ele] = 0;
 
