@@ -138,14 +138,15 @@ def parallel_adaptiveAdd(lmbda, V, S, objective, eps, k, comm, rank, size, tau =
         if pos > 1:
             ppos=lmbda[ idcs[0] - 1 ];
 
-        tmpS = list( set().union( V[0 : ppos], S) );
-        valTmpS = objective.value( tmpS );
+        oldtmpS = list( set().union( V[0 : ppos], S) );
+        valTmpS = objective.value( oldtmpS );
         Ti=list(set(V[ppos:pos]))
 
         for idx in range(1,len(idcs) + 1):
-            tmpS = list( set(tmpS) | set( Ti) );
+            tmpS = list( set(oldtmpS) | set( Ti) );
             
-            gain= objective.value( tmpS ) - valTmpS;
+            # gain= objective.value( tmpS ) - valTmpS;
+            gain= objective.marginalval( tmpS, oldtmpS)
             if (tau == 0):
                 thresh = len(Ti)*(1-eps)*valTmpS / np.float(k);
             else:
