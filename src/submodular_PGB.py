@@ -343,6 +343,9 @@ def LinearSeq(objective, k, eps, comm, rank, size, p_root=0, seed=42, stop_if_ap
                     Ap = S;
                 valAp = objective.value(Ap)
                 queries += 1
+                #Tracking Adaptivity
+                S_rounds.append([ele for ele in S])
+                query_rounds.append(queries)  
                 comm.barrier()
                 p_stop = MPI.Wtime()
                 time = (p_stop - p_start)
@@ -388,8 +391,6 @@ def LinearSeq(objective, k, eps, comm, rank, size, p_root=0, seed=42, stop_if_ap
             print("done.");
         #Added query increment
         queries += len( lmbda );
-        query_rounds.append(queries)
-        time_rounds.append( MPI.Wtime() - p_start ) 
         lmbda_star = lmbda[0]
         
         if len(B) > 1:
@@ -497,8 +498,6 @@ def LinearSeq(objective, k, eps, comm, rank, size, p_root=0, seed=42, stop_if_ap
             print("done.");
         
         queries += len( lmbda );
-        query_rounds.append(queries)
-        time_rounds.append( MPI.Wtime() - p_start ) 
         lmbda_star = lmbda[0]
         
         if len(B) > 1:
@@ -610,7 +609,7 @@ def ParallelGreedyBoost(objective, k, eps, comm, rank, size, p_root=0, seed=42,s
     #Tracking adaptivity
     S_rounds = sol_r
     time_rounds = [0]
-    query_rounds = [0]
+    query_rounds = queries_r
     iters = 0
     #I1 = make_I(eps, k)
     
@@ -651,6 +650,7 @@ def ParallelGreedyBoost(objective, k, eps, comm, rank, size, p_root=0, seed=42,s
             queries += queries_tmp
             #Tracking adaptivity
             S_rounds.append([ele for ele in S])
+            query_rounds.append(queries)
             for ele in S:
                 pastGains[ele] = 0;
 
@@ -664,6 +664,7 @@ def ParallelGreedyBoost(objective, k, eps, comm, rank, size, p_root=0, seed=42,s
                 valSol = objective.value( S )
                 #Added increment
                 queries += 1
+                query_rounds[-1]=queries
                 if (rank == 0):
                     print("ABR stopping early.");
                 return valSol, queries, time, sol, sol_r, time_r, queries_r

@@ -40,9 +40,10 @@ FAST_src_path = "/home/tonmoy/SubmodularData/submodular/src"
 
 # Load our optimization algorithms and helper functions
 from src import submodular_PGB
-if (FAST_src_path!=""):
-    sys.path.append(FAST_src_path)
-    import submodular
+from src import submodular
+# if (FAST_src_path!=""):
+#     sys.path.append(FAST_src_path)
+#     import submodular
 
 
 
@@ -112,7 +113,7 @@ def run_PGB(objective, k_vals_vec, filepath_string, experiment_string, comm, ran
     time_vec = []
     #Tracking adaptivity
     adap_vec = []
-
+    mean_qry_round = []
     for ii, kk in enumerate(k_vals_vec):
 
         for trial in range(trials):
@@ -137,14 +138,20 @@ def run_PGB(objective, k_vals_vec, filepath_string, experiment_string, comm, ran
                 queries_vec.append(queries)
                 time_vec.append(time)
                 #Tracking adaptivity
-                adap_vec,append(len(sol_r))
-
+                qry_per_round = []
+                adap_vec.append(len(sol_r))
+                qry_per_round.append(queries_r[0])
+                for i in range(1,len(queries_r)):
+                    qry_per_round.append(queries_r[i]-queries_r[i-1])
+                mean_qry_round.append(np.mean(qry_per_round))
+                
                 ## Save data progressively
                 dataset = pd.DataFrame({'f_of_S':  val_vec, \
                                         'Queries': queries_vec, \
                                         'Time':    time_vec, \
                                         #Tracking adaptivity
                                         'Adaptivity': adap_vec, \
+                                        'QueriesPerRound': mean_qry_round, \
                                         'k':       np.concatenate([np.repeat(k_vals_vec[:ii], trials), [kk]*(trial+1)]), \
                                         'n':       [size_groundset]*(ii*trials+trial+1), \
                                         'nproc':   [size]*(ii*trials+trial+1), \
@@ -168,6 +175,7 @@ def run_FAST(objective, k_vals_vec, filepath_string, experiment_string, comm, ra
     time_vec = []
     #Tracking adaptivity
     adap_vec = []
+    mean_qry_round = []
     # Save data progressively. 
     for ii, kk in enumerate(k_vals_vec):
 
@@ -181,7 +189,7 @@ def run_FAST(objective, k_vals_vec, filepath_string, experiment_string, comm, ra
             queries_r = []
 
             # Run the algorithm
-            val, queries, time, sol = submodular.FAST_guessopt_parallel(objective, kk, eps, comm, rank, size, \
+            val, queries, time, sol, sol_r, queries_r = submodular.FAST_guessopt_parallel(objective, kk, eps, comm, rank, size, \
                                             preprocess_add=True, lazy_binsearch=True, lazyouterX=True, 
                                             debug_asserts=False, weight_sampling_eps=1.0, sample_threshold=True, \
                                             lazyskipbinsearch=True, verbose=False, stop_if_approx=True, \
@@ -194,13 +202,20 @@ def run_FAST(objective, k_vals_vec, filepath_string, experiment_string, comm, ra
                 queries_vec.append(queries)
                 time_vec.append(time)
                 #Tracking adaptivity
-                adap_vec,append(len(sol_r))
+                qry_per_round = []
+                adap_vec.append(len(sol_r))
+                qry_per_round.append(queries_r[0])
+                for i in range(1,len(queries_r)):
+                    qry_per_round.append(queries_r[i]-queries_r[i-1])
+                mean_qry_round.append(np.mean(qry_per_round))
+                
                 ## Save data progressively
                 dataset = pd.DataFrame({'f_of_S':  val_vec, \
                                         'Queries': queries_vec, \
                                         'Time':    time_vec, \
                                         #Tracking adaptivity
                                         'Adaptivity': adap_vec, \
+                                        'QueriesPerRound': mean_qry_round, \
                                         'k':       np.concatenate([np.repeat(k_vals_vec[:ii], trials), [kk]*(trial+1)]), \
                                         'n':       [size_groundset]*(ii*trials+trial+1), \
                                         'nproc':   [size]*(ii*trials+trial+1), \
@@ -274,9 +289,9 @@ def run_LTLG_experiments(objective, k_vals_vec, filepath_string, experiment_stri
     save CSV files of data and runtimes """
     blockPrint()
     if(algo=="ALL"):
-        run_PLG(objective, k_vals_vec, filepath_string, experiment_string, comm, rank, size) 
+        # run_PLG(objective, k_vals_vec, filepath_string, experiment_string, comm, rank, size) 
         
-        run_LS(objective, k_vals_vec, filepath_string, experiment_string, comm, rank, size)
+        # run_LS(objective, k_vals_vec, filepath_string, experiment_string, comm, rank, size)
         
         run_PGB(objective, k_vals_vec, filepath_string, experiment_string, comm, rank, size)
         
