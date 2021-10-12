@@ -2540,7 +2540,7 @@ def FAST_guessopt_parallel(objective, k, eps, comm, rank, size, preprocess_add=T
         queries +=  queries_I2 
         queries_vec.append(queries_I2)
         #Tracking adaptivity
-        if(len(S_rounds)<1):
+        if(len(S_rounds)==1):
             S_rounds = sol_r
         else:
             for i in range(len(sol_r)):
