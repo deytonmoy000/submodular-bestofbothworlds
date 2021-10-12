@@ -10,13 +10,13 @@ suffix=".csv"
 
 declare -a data_name=("CAROADFULL" "INFLUENCEEPINIONS" "TWITTERSUMM" "YOUTUBE2000" "ER_100k" "WS_100k" "BA_100k"  "IMAGESUMM")
 
-declare -a objs=("TRF" "IFM" "TS" "RVM" "ER" "WS" "BA" "IS_PLG")
+declare -a objs=("TRF" "IFM" "TS" "RVM" "ER" "WS" "BA" "IS_PGB")
 
 for i in ${!data_name[@]};
 do
 	data=${data_name[$i]}
 	obj=${objs[$i]}
-	cmd="mpirun --oversubscribe -np ${nthreads} python3 -W ignore ${pyfile} ${obj} ALL"
+	cmd="mpirun -np ${nthreads} python3 -W ignore ${pyfile} ${obj} ALL"
 	echo $cmd
 	$cmd
     
@@ -25,7 +25,7 @@ done
 
 declare -a data_name=("IMAGESUMM" "IMAGESUMM" "IMAGESUMM")
 
-declare -a objs=("IS_LS" "IS_PGB" "IS_FAST")
+declare -a objs=("IS_FAST") #"IS_LS" "IS_PLG" 
 
 for i in ${!data_name[@]};
 do
